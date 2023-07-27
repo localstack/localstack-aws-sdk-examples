@@ -15,3 +15,5 @@
 # vendor/
 
 node_modules/
+/.idea/
+/java/java-sdk-examples/.idea/
