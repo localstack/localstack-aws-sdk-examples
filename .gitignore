@@ -15,5 +15,6 @@
 # vendor/
 
 node_modules/
+
+# IntelliJ generated folder
 /.idea/
-/java/java-sdk-examples/.idea/
