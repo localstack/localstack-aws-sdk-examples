@@ -18,3 +18,7 @@ node_modules/
 
 # IntelliJ generated folder
 /.idea/
+
+# Target folders
+/java/java-sdk-examples/java-sdk-v1/target/
+/java/java-sdk-examples/java-sdk-v2/target/
