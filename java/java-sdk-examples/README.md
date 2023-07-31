@@ -10,10 +10,10 @@
 
 ## Description
 
-This repository's purpose is to support the LocalStack documentation on using the platform with Java 
+This repository's purpose is to support the LocalStack documentation on using the platform with Java
 applications. The two examples are using the Java AWS SDK v1 and v2.
-The AWS SDK for Java 2.x is a major rewrite of the 1.x code base built on top of Java 8+. 
-It includes many updates, such as improved consistency, ease of use, and strongly enforced immutability. 
+The AWS SDK for Java 2.x is a major rewrite of the 1.x code base built on top of Java 8+.
+It includes many updates, such as improved consistency, ease of use, and strongly enforced immutability.
 Please refer to the [AWS guide](https://docs.aws.amazon.com/sdk-for-java/latest/developer-guide/migration.html) on how to migrate your code to version 2.x from 1.x.
 
 ## Prerequisites
@@ -21,6 +21,18 @@ Please refer to the [AWS guide](https://docs.aws.amazon.com/sdk-for-java/latest/
 - [Maven 3.8.5](https://maven.apache.org/install.html) & [Java 17](https://www.java.com/en/download/help/download_options.html)
 - [LocalStack](https://localstack.cloud/)
 - [Docker](https://docs.docker.com/get-docker/) - for running LocalStack
+- [AWS CLI](https://aws.amazon.com/cli/) and [awslocal](https://docs.localstack.cloud/user-guide/integrations/aws-cli/#localstack-aws-cli-awslocal)
 
+## Running the examples
+
+- Start LocalStack:
+    - use the `localstack start` command
+    - or you can use this minimal `docker compose` configuration [file](https://github.com/localstack/localstack/blob/master/docker-compose.yml)
+- For each module (`java-sdk-v1` and `java-sdk-v2`) there are shell scripts that need to be executed to create
+  the necessary resources (S3 bucket and DynamoDB table). These files are the same for both projects, if you
+  choose to try both SDKs, you only need to run them once.
+- Run the respective services using the `mvn exec:java -Dexec.mainClass=` command. For example, to run the SDK v1 DynamoDB
+  actions you would use `mvn exec:java -Dexec.mainClass="v1.dynamodb.DynamoDBService"`. You can, of course, use your preferred IDE's
+  built-in tools to run the `main` function.
 
 
