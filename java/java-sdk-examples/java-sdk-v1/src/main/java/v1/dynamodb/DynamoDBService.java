@@ -74,5 +74,5 @@ public class DynamoDBService {
 
     System.out.println("Person added successfully!");
 
-}
+  }
 }
