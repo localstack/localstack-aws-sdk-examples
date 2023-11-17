@@ -1,0 +1,1 @@
+Hello world from the text file inside the S3 bucket! File was uploaded using the Java AWS SDK v2.
