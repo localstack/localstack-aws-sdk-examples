@@ -70,7 +70,6 @@ func main() {
 		Bucket:             aws.String(bucketName),
 		Key:                aws.String(s3Key1),
 		Body:               bytes.NewReader(body1),
-		ContentLength:      int64(len(body1)),
 		ContentType:        aws.String("application/text"),
 		ContentDisposition: aws.String("attachment"),
 	})
@@ -80,7 +79,6 @@ func main() {
 		Bucket:             aws.String(bucketName),
 		Key:                aws.String(s3Key2),
 		Body:               bytes.NewReader(body2),
-		ContentLength:      int64(len(body2)),
 		ContentType:        aws.String("application/text"),
 		ContentDisposition: aws.String("attachment"),
 	})
