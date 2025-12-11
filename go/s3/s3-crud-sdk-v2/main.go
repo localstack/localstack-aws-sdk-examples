@@ -11,6 +11,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/aws/aws-sdk-go-v2/service/s3/types"
+	smithyendpoints "github.com/aws/smithy-go/endpoints"
 )
 
 var (
@@ -30,22 +31,8 @@ func init() {
 	awsEndpoint = "http://localhost:4566"
 	bucketName = "test"
 
-	customResolver := aws.EndpointResolverWithOptionsFunc(func(service, region string, options ...interface{}) (aws.Endpoint, error) {
-		if awsEndpoint != "" {
-			return aws.Endpoint{
-				PartitionID:   "aws",
-				URL:           awsEndpoint,
-				SigningRegion: awsRegion,
-			}, nil
-		}
-
-		// returning EndpointNotFoundError will allow the service to fallback to it's default resolution
-		return aws.Endpoint{}, &aws.EndpointNotFoundError{}
-	})
-
 	awsCfg, err := config.LoadDefaultConfig(context.TODO(),
 		config.WithRegion(awsRegion),
-		config.WithEndpointResolverWithOptions(customResolver),
 	)
 	if err != nil {
 		log.Fatalf("Cannot load the AWS configs: %s", err)
@@ -53,6 +40,7 @@ func init() {
 
 	s3svc = s3.NewFromConfig(awsCfg, func(o *s3.Options) {
 		o.UsePathStyle = true
+		o.EndpointResolverV2 = newLocalstackEndpointResolver(awsEndpoint)
 	})
 }
 
@@ -114,4 +102,21 @@ func main() {
 		},
 	}
 	s3svc.DeleteObjects(context.TODO(), &input)
+}
+
+type localstackEndpointResolver struct {
+	inner    s3.EndpointResolverV2
+	endpoint *string
+}
+
+func newLocalstackEndpointResolver(endpoint string) *localstackEndpointResolver {
+	return &localstackEndpointResolver{
+		inner:    s3.NewDefaultEndpointResolverV2(),
+		endpoint: &endpoint,
+	}
+}
+
+func (l *localstackEndpointResolver) ResolveEndpoint(ctx context.Context, params s3.EndpointParameters) (smithyendpoints.Endpoint, error) {
+	params.Endpoint = l.endpoint
+	return l.inner.ResolveEndpoint(ctx, params)
 }
